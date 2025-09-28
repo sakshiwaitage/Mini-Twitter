@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twitter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e6ecf0;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #1da1f2;
+      padding: 10px 0;
+      text-align: center;
+      color: white;
+    }
+
+    header i.fa-twitter {
+      font-size: 30px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 0 10px;
+    }
+
+    
+    .add-tweet {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .add-tweet input[type=text] {
+      flex: 1;
+      padding: 8px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .add-tweet button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      background: #1da1f2;
+      color: white;
+      cursor: pointer;
+    }
+
+
+    .tweet {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 15px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .tweet strong {
+      color: #1da1f2;
+      font-size: 16px;
+    }
+
+    .tweet p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #14171a;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .actions button {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 50%;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 14px;
+    }
+
+    .actions button:hover {
+      background: #dcdcdc;
+    }
+
+    .edit-input {
+      display: none;
+      margin-top: 8px;
+    }
+
+    .edit-input input {
+      flex: 1;
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .edit-input button {
+      padding: 6px 10px;
+      background: #1da1f2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .liked i {
+      color: red;
+    }
+
+  </style>
+  <script>
+    function toggleEdit(id) {
+      const inputDiv = document.getElementById('edit-' + id);
+      inputDiv.style.display = inputDiv.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
+</head>
+<body>
+
+  <header>
+    <i class="fab fa-twitter"></i>
+  </header>
+
+  <div class="container">
+
+  <form class="add-tweet" action="/tweets/new" method="POST">
+    <input type="text" name="username" placeholder="Your username" required>
+    <input type="text" name="content" placeholder="What's happening?" required>
+    <button type="submit">Tweet</button>
+  </form>
+
+    <!-- Tweets Loop -->
+  <% tweets.forEach(tweet => { %>
+  <div class="tweet">
+        <strong>@<%= tweet.username %></strong>
+        <p><%= tweet.content %></p>
+        <p>Likes: <%= tweet.likes %></p>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+          <button type="button" onclick="toggleEdit(<%= tweet.id %>)">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <form action="/tweets/<%= tweet.id %>?_method=DELETE" method="POST">
+            <button type="submit"><i class="fa-solid fa-trash"></i></button>
+          </form>
+          <form action="/tweets/<%= tweet.id %>/like" method="POST">
+            <button type="submit" class="<%= tweet.liked ? 'liked' : '' %>"><i class="fa-solid fa-heart"></i></button>
+          </form>
+
+        </div>
+
+        <!-- Edit Input -->
+        <div class="edit-input" id="edit-<%= tweet.id %>">
+          <form action="/tweets/<%= tweet.id %>?_method=PUT" method="POST" style="display:flex;gap:4px;">
+            <input type="text" name="content" placeholder="<%= tweet.content %>" required>
+            <button type="submit">Save</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+
+  </div>
+
+</body>
+</html>

@@ -26,8 +26,8 @@ This project allows users to create, edit, delete, and like tweets with a simple
 
 🔹 Screenshots
 
-![Home Page](image/twitter1.png)
-![Home Page](image/twitter2.png)
+![Home Page](images/twitter1.png)
+![Home Page](images/twitter2.png)
 
 
 

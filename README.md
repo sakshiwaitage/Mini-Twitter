@@ -24,10 +24,6 @@ This project allows users to create, edit, delete, and like tweets with a simple
 | Database   | MySQL |
 | Other      | Method-Override (for PUT & DELETE requests) |
 
-🔹 Screenshots
-
-![Home Page](images/twitter1.png)
-![Home Page](images/twitter2.png)
 
 
 
